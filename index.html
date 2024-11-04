@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buat Kamu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oleo+Script&family=Chewy&display=swap" rel="stylesheet">
+  <style>
+    /* Gaya umum */
+    body {
+      background-color: #f9f7f3;
+      font-family: 'Chewy', sans-serif;
+    }
+
+    /* Kartu pos awal */
+    #postcard {
+      display: block;
+      width: 90%;
+      max-width: 600px;
+      background-image: url('https://www.transparenttextures.com/patterns/concrete-wall.png'); /* Tekstur kertas */
+      border: 2px solid #d2b48c;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-family: 'Oleo Script', cursive;
+    }
+
+    /* Tampilan kertas surat */
+    #letter {
+      display: none;
+      width: 80%;
+      max-width: 500px;
+      background-color: #fff8e7;
+      border: 2px solid #d2b48c;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Pesan di dalam surat */
+    #message {
+      font-size: 1.5em;
+      color: #333;
+      line-height: 1.6;
+      font-family: 'Chewy', sans-serif;
+    }
+
+    /* Pilihan akhir */
+    #final-message {
+      display: none;
+      width: 80%;
+      max-width: 500px;
+      background-color: #fff8e7;
+      border: 2px solid #d2b48c;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-family: 'Oleo Script', cursive;
+    }
+
+    /* Gaya GIF di bagian akhir */
+    #final-message img, #funny-message img {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+
+    /* Pesan lucu */
+    #funny-message {
+      display: none;
+      font-family: 'Oleo Script', cursive;
+      background-color: #fff8e7;
+      border: 2px solid #d2b48c;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Tombol tidak yang bergerak */
+    #btn-no {
+      position: absolute;
+    }
+  </style>
+</head>
+<body class="d-flex align-items-center justify-content-center vh-100">
+
+  <!-- Kartu Pos Awal -->
+  <div id="postcard">
+    <h2 style="color: #8b4513;">Haii Sayangg 🤍🤍🤍!</h2>
+    <button class="btn btn-secondary mt-4" onclick="showLetter()">Coba Klik</button>
+  </div>
+
+  <!-- Tampilan Kertas Surat -->
+  <div id="letter" class="text-center">
+    <h3 style="color: #8b4513;">Buat Kesayangkuu🤍🤍🤍</h3>
+    <p id="message">Yeyyy Sudah Selesaii UB nyaa Sayangkuu.</p>
+    <button class="btn btn-secondary mt-4" onclick="nextMessage()">Selanjutnya</button>
+  </div>
+
+  <!-- Pilihan Akhir dengan GIF -->
+  <div id="final-message" class="text-center">
+    <img src="happy.gif" alt="Happy GIF" class="img-fluid">
+    <h3 style="color: #8b4513;">Kamu Hebat Sayangg 🤍🤍</h3>
+    <p>Puas ndaa sama ujiannya sayangg?</p>
+    <button id="btn-yes" class="btn btn-success me-3" onclick="showFunnyMessage()">Iya</button>
+    <button id="btn-no" class="btn btn-danger" onclick="moveButton()">Tidak</button>
+  </div>
+
+  <!-- Pesan Lucu dan GIF -->
+  <div id="funny-message" class="text-center">
+    <h3 style="color: #8b4513;">HARUSS PUASS SAYANGG KAMU UDAH NGELAKUIN YANG TERBAIKKK😠😠</h3>
+    <p style="color: #8b4513">LOVE YOUU BANYAKK BANYAKK SAYANGGG🤍🤍</p>
+    <p>heheheee udah webnya sampai sinii bubb🫠🫠</p>
+    <img src="happy2.gif" alt="Happy GIF" class="img-fluid">
+  </div>
+
+  <script>
+    // Variabel pesan
+    let messages = [
+      "Selamat yaa bububb udah selesai UB nyaa.",
+      "Apapun hasilnya kamu udah ngelakuin yang terbaik sayangg",
+      "Aku yakin kamu bisaa sayangg.",
+      "Kamuu hebatt sayanggg aku banggaa sama kamuu."
+    ];
+    let currentMessage = 0;
+
+    // Tampilkan kertas surat
+    function showLetter() {
+      document.getElementById("postcard").style.display = "none";
+      document.getElementById("letter").style.display = "block";
+    }
+
+    // Menampilkan pesan berikutnya
+    function nextMessage() {
+      currentMessage++;
+      if (currentMessage < messages.length) {
+        document.getElementById("message").textContent = messages[currentMessage];
+      } else {
+        document.getElementById("letter").style.display = "none";
+        document.getElementById("final-message").style.display = "block";
+      }
+    }
+
+    // Fungsi untuk tombol Tidak yang bergerak
+    function moveButton() {
+      let btnNo = document.getElementById("btn-no");
+      btnNo.style.top = Math.floor(Math.random() * 100) + "px";
+      btnNo.style.left = Math.floor(Math.random() * 100) + "px";
+    }
+
+    // Tampilkan pesan lucu dengan GIF
+    function showFunnyMessage() {
+      document.getElementById("final-message").style.display = "none";
+      document.getElementById("funny-message").style.display = "block";
+    }
+  </script>
+</body>
+</html>
