@@ -11,7 +11,8 @@
     body {
       background-color: #f9f7f3;
       font-family: 'Chewy', sans-serif;
-      position: relative; /* Ditambahkan untuk posisi tombol yang bergerak */
+      position: relative;
+      overflow-x: hidden;
     }
 
     /* Container utama */
@@ -72,6 +73,7 @@
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
       text-align: center;
       font-family: 'Oleo Script', cursive;
+      position: relative;
     }
 
     /* Gaya GIF di bagian akhir */
@@ -106,6 +108,13 @@
       padding: 10px 20px;
       font-size: 1.1em;
     }
+
+    /* Wrapper untuk tombol */
+    .button-wrapper {
+      position: relative;
+      min-height: 60px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -128,9 +137,9 @@
       <img src="happy.gif" alt="Happy GIF" class="img-fluid">
       <h3 style="color: #8b4513;">Kamu Hebat Sayangg 🤍🤍</h3>
       <p>Puas ndaa sama ujiannya sayangg?</p>
-      <div>
+      <div class="button-wrapper">
         <button id="btn-yes" class="btn btn-success" onclick="showFunnyMessage()">Iya</button>
-        <button id="btn-no" class="btn btn-danger" onmouseover="moveButton()">Tidak</button>
+        <button id="btn-no" class="btn btn-danger" onclick="attemptToClickNo()">Tidak</button>
       </div>
     </div>
 
@@ -146,12 +155,15 @@
   <script>
     // Variabel pesan
     let messages = [
+      "Yeyyy Sudah Selesaii UB nyaa Sayangkuu.",
       "Selamat yaa bububb udah selesai UB nyaa.",
       "Apapun hasilnya kamu udah ngelakuin yang terbaik sayangg",
       "Aku yakin kamu bisaa sayangg.",
       "Kamuu hebatt sayanggg aku banggaa sama kamuu."
     ];
     let currentMessage = 0;
+    let noButtonClicks = 0;
+    const maxAttempts = 5; // Jumlah maksimal klik sebelum tombol "Tidak" bekerja
 
     // Tampilkan kertas surat
     function showLetter() {
@@ -173,10 +185,42 @@
     // Fungsi untuk tombol Tidak yang bergerak
     function moveButton() {
       let btnNo = document.getElementById("btn-no");
-      // Gerakan acak dalam area yang terbatas
-      let randomX = Math.floor(Math.random() * 100) - 50;
-      let randomY = Math.floor(Math.random() * 100) - 50;
-      btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      const wrapper = document.querySelector('.button-wrapper');
+      const wrapperRect = wrapper.getBoundingClientRect();
+      
+      // Hitung posisi acak dalam area wrapper
+      const maxX = wrapperRect.width - btnNo.offsetWidth;
+      const maxY = wrapperRect.height - btnNo.offsetHeight;
+      
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      
+      btnNo.style.position = 'absolute';
+      btnNo.style.left = randomX + 'px';
+      btnNo.style.top = randomY + 'px';
+    }
+
+    // Fungsi ketika mencoba klik tombol Tidak
+    function attemptToClickNo() {
+      noButtonClicks++;
+      
+      if (noButtonClicks >= maxAttempts) {
+        // Jika sudah mencoba cukup kali, baru tampilkan pesan lucu
+        showFunnyMessage();
+      } else {
+        // Pindahkan tombol ke posisi acak
+        moveButton();
+        
+        // Pesan lucu saat mencoba klik
+        const funnyResponses = [
+          "Coba lagi sayanggg!",
+          "Hampir terkenaa!",
+          "Kamu pasti bisa!",
+          "Ayo klik yang benerr!",
+          "Terakhir nii!"
+        ];
+        alert(funnyResponses[noButtonClicks - 1] || "Coba lagi yaa!");
+      }
     }
 
     // Tampilkan pesan lucu dengan GIF
