@@ -98,8 +98,9 @@
 
     /* Tombol tidak yang bergerak */
     #btn-no {
-      position: relative;
-      transition: all 0.3s ease;
+      position: absolute;
+      transition: all 0.5s ease;
+      cursor: not-allowed;
     }
 
     /* Tombol umum */
@@ -112,7 +113,7 @@
     /* Wrapper untuk tombol */
     .button-wrapper {
       position: relative;
-      min-height: 60px;
+      min-height: 100px;
       margin-top: 20px;
     }
   </style>
@@ -139,7 +140,7 @@
       <p>Puas ndaa sama ujiannya sayangg?</p>
       <div class="button-wrapper">
         <button id="btn-yes" class="btn btn-success" onclick="showFunnyMessage()">Iya</button>
-        <button id="btn-no" class="btn btn-danger" onclick="attemptToClickNo()">Tidak</button>
+        <button id="btn-no" class="btn btn-danger">Tidak</button>
       </div>
     </div>
 
@@ -162,8 +163,6 @@
       "Kamuu hebatt sayanggg aku banggaa sama kamuu."
     ];
     let currentMessage = 0;
-    let noButtonClicks = 0;
-    const maxAttempts = 5; // Jumlah maksimal klik sebelum tombol "Tidak" bekerja
 
     // Tampilkan kertas surat
     function showLetter() {
@@ -179,48 +178,40 @@
       } else {
         document.getElementById("letter").style.display = "none";
         document.getElementById("final-message").style.display = "block";
+        startMovingButton();
       }
     }
 
-    // Fungsi untuk tombol Tidak yang bergerak
-    function moveButton() {
-      let btnNo = document.getElementById("btn-no");
+    // Fungsi untuk membuat tombol Tidak bergerak
+    function startMovingButton() {
+      const btnNo = document.getElementById("btn-no");
       const wrapper = document.querySelector('.button-wrapper');
+      
+      // Gerakan acak setiap 1 detik
+      setInterval(() => {
+        moveButtonRandomly(btnNo, wrapper);
+      }, 1000);
+      
+      // Juga bergerak saat cursor mendekat
+      btnNo.addEventListener('mouseover', () => {
+        moveButtonRandomly(btnNo, wrapper);
+      });
+    }
+
+    // Fungsi untuk memindahkan tombol ke posisi acak
+    function moveButtonRandomly(button, wrapper) {
       const wrapperRect = wrapper.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
       
       // Hitung posisi acak dalam area wrapper
-      const maxX = wrapperRect.width - btnNo.offsetWidth;
-      const maxY = wrapperRect.height - btnNo.offsetHeight;
+      const maxX = wrapperRect.width - buttonRect.width;
+      const maxY = wrapperRect.height - buttonRect.height;
       
       const randomX = Math.floor(Math.random() * maxX);
       const randomY = Math.floor(Math.random() * maxY);
       
-      btnNo.style.position = 'absolute';
-      btnNo.style.left = randomX + 'px';
-      btnNo.style.top = randomY + 'px';
-    }
-
-    // Fungsi ketika mencoba klik tombol Tidak
-    function attemptToClickNo() {
-      noButtonClicks++;
-      
-      if (noButtonClicks >= maxAttempts) {
-        // Jika sudah mencoba cukup kali, baru tampilkan pesan lucu
-        showFunnyMessage();
-      } else {
-        // Pindahkan tombol ke posisi acak
-        moveButton();
-        
-        // Pesan lucu saat mencoba klik
-        const funnyResponses = [
-          "Coba lagi sayanggg!",
-          "Hampir terkenaa!",
-          "Kamu pasti bisa!",
-          "Ayo klik yang benerr!",
-          "Terakhir nii!"
-        ];
-        alert(funnyResponses[noButtonClicks - 1] || "Coba lagi yaa!");
-      }
+      button.style.left = randomX + 'px';
+      button.style.top = randomY + 'px';
     }
 
     // Tampilkan pesan lucu dengan GIF
