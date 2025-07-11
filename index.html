@@ -11,6 +11,17 @@
     body {
       background-color: #f9f7f3;
       font-family: 'Chewy', sans-serif;
+      position: relative; /* Ditambahkan untuk posisi tombol yang bergerak */
+    }
+
+    /* Container utama */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     /* Kartu pos awal */
@@ -18,7 +29,7 @@
       display: block;
       width: 90%;
       max-width: 600px;
-      background-image: url('https://www.transparenttextures.com/patterns/concrete-wall.png'); /* Tekstur kertas */
+      background-image: url('https://www.transparenttextures.com/patterns/concrete-wall.png');
       border: 2px solid #d2b48c;
       padding: 20px;
       border-radius: 15px;
@@ -30,13 +41,15 @@
     /* Tampilan kertas surat */
     #letter {
       display: none;
-      width: 80%;
+      width: 90%;
       max-width: 500px;
       background-color: #fff8e7;
       border: 2px solid #d2b48c;
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-family: 'Chewy', sans-serif;
     }
 
     /* Pesan di dalam surat */
@@ -44,13 +57,13 @@
       font-size: 1.5em;
       color: #333;
       line-height: 1.6;
-      font-family: 'Chewy', sans-serif;
+      margin-bottom: 20px;
     }
 
     /* Pilihan akhir */
     #final-message {
       display: none;
-      width: 80%;
+      width: 90%;
       max-width: 500px;
       background-color: #fff8e7;
       border: 2px solid #d2b48c;
@@ -70,50 +83,64 @@
     /* Pesan lucu */
     #funny-message {
       display: none;
+      width: 90%;
+      max-width: 500px;
       font-family: 'Oleo Script', cursive;
       background-color: #fff8e7;
       border: 2px solid #d2b48c;
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
 
     /* Tombol tidak yang bergerak */
     #btn-no {
-      position: absolute;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    /* Tombol umum */
+    .btn {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1.1em;
     }
   </style>
 </head>
-<body class="d-flex align-items-center justify-content-center vh-100">
+<body>
+  <div class="container">
+    <!-- Kartu Pos Awal -->
+    <div id="postcard">
+      <h2 style="color: #8b4513;">Haii Sayangg 🤍🤍!</h2>
+      <button class="btn btn-secondary mt-4" onclick="showLetter()">Coba Klik</button>
+    </div>
 
-  <!-- Kartu Pos Awal -->
-  <div id="postcard">
-    <h2 style="color: #8b4513;">Haii Sayangg 🤍🤍!</h2>
-    <button class="btn btn-secondary mt-4" onclick="showLetter()">Coba Klik</button>
-  </div>
+    <!-- Tampilan Kertas Surat -->
+    <div id="letter">
+      <h3 style="color: #8b4513;">Buat Kesayangkuu🤍🤍</h3>
+      <p id="message">Yeyyy Sudah Selesaii UB nyaa Sayangkuu.</p>
+      <button class="btn btn-secondary" onclick="nextMessage()">Selanjutnya</button>
+    </div>
 
-  <!-- Tampilan Kertas Surat -->
-  <div id="letter" class="text-center">
-    <h3 style="color: #8b4513;">Buat Kesayangkuu🤍🤍</h3>
-    <p id="message">Yeyyy Sudah Selesaii UB nyaa Sayangkuu.</p>
-    <button class="btn btn-secondary mt-4" onclick="nextMessage()">Selanjutnya</button>
-  </div>
+    <!-- Pilihan Akhir dengan GIF -->
+    <div id="final-message">
+      <img src="happy.gif" alt="Happy GIF" class="img-fluid">
+      <h3 style="color: #8b4513;">Kamu Hebat Sayangg 🤍🤍</h3>
+      <p>Puas ndaa sama ujiannya sayangg?</p>
+      <div>
+        <button id="btn-yes" class="btn btn-success" onclick="showFunnyMessage()">Iya</button>
+        <button id="btn-no" class="btn btn-danger" onmouseover="moveButton()">Tidak</button>
+      </div>
+    </div>
 
-  <!-- Pilihan Akhir dengan GIF -->
-  <div id="final-message" class="text-center">
-    <img src="happy.gif" alt="Happy GIF" class="img-fluid">
-    <h3 style="color: #8b4513;">Kamu Hebat Sayangg 🤍🤍</h3>
-    <p>Puas ndaa sama ujiannya sayangg?</p>
-    <button id="btn-yes" class="btn btn-success me-3" onclick="showFunnyMessage()">Iya</button>
-    <button id="btn-no" class="btn btn-danger" onclick="showFunnyMessage()">Tidak</button>
-  </div>
-
-  <!-- Pesan Lucu dan GIF -->
-  <div id="funny-message" class="text-center">
-    <h3 style="color: #8b4513;">HARUSS PUASS SAYANGG KAMU UDAH NGELAKUIN YANG TERBAIKKK😠😠</h3>
-    <p style="color: #8b4513">LOVE YOUU BANYAKK BANYAKK SAYANGGG🤍🤍</p>
-    <p>heheheee udah webnya sampai sinii bubb🫠🫠</p>
-    <img src="happy2.gif" alt="Happy GIF" class="img-fluid">
+    <!-- Pesan Lucu dan GIF -->
+    <div id="funny-message">
+      <h3 style="color: #8b4513;">HARUSS PUASS SAYANGG KAMU UDAH NGELAKUIN YANG TERBAIKKK😠😠</h3>
+      <p style="color: #8b4513">LOVE YOUU BANYAKK BANYAKK SAYANGGG🤍🤍</p>
+      <p>heheheee udah webnya sampai sinii bubb🫠🫠</p>
+      <img src="happy2.gif" alt="Happy GIF" class="img-fluid">
+    </div>
   </div>
 
   <script>
@@ -146,8 +173,10 @@
     // Fungsi untuk tombol Tidak yang bergerak
     function moveButton() {
       let btnNo = document.getElementById("btn-no");
-      btnNo.style.top = Math.floor(Math.random() * 100) + "px";
-      btnNo.style.left = Math.floor(Math.random() * 100) + "px";
+      // Gerakan acak dalam area yang terbatas
+      let randomX = Math.floor(Math.random() * 100) - 50;
+      let randomY = Math.floor(Math.random() * 100) - 50;
+      btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
     }
 
     // Tampilkan pesan lucu dengan GIF
